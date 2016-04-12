@@ -4,19 +4,22 @@ Created on Mon Mar 28 19:06:46 2016
 
 @author: Ankit
 """
-
+import scipy
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib as plt
-
-b=10
-hc=100
-w=0.7833
-c=2673
-dele=3.175e-3
-Hh=80
-W=0.7444
-C=2773
+import pandas as pd
+data=pd.read_excel("spiralwoundhx1.xlsx","Sheet2")
+print data
+value=scipy.array(data["Value"])
+b=value[0]
+hc=value[1]
+w=value[2]
+c=value[3]
+dele=value[4]
+Hh=value[5]
+W=value[6]
+C=value[7]
 def f(molar_flow_rates,x,param):
         tci,tci1,thi,thi1,r,R=molar_flow_rates
         b,hc,w,dele=param
@@ -48,4 +51,6 @@ psoln=odeint(f,molar_flow_rates0,x,args=(param,))
 print psoln    
 #heat balance
 tout=200-(w*c*(90.932-60)/(W*C))
-print tout
+print 'by enthalpy balance hot outlet - ',tout
+print ' hot outlet from equation-',psoln[2,2]
+print ' Cold outlet from equation-',psoln[2,1]
